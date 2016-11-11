@@ -40,17 +40,17 @@ end divide_tb;
 architecture Behavioral of divide_tb is
 
     component pipeline_divide is
-    port(   A: in std_logic_vector(1 downto 0);
-            B: in std_logic_vector(1 downto 0);
+    port(   A: in std_logic_vector(15 downto 0);
+            B: in std_logic_vector(15 downto 0);
             En: in std_logic;
-            Q: out std_logic_vector(1 downto 0);
-            R: out std_logic_vector(1 downto 0)
+            Q: out std_logic_vector(15 downto 0);
+            R: out std_logic_vector(15 downto 0)
     ); 
     end component;
     
-    signal A, B:    std_logic_vector(1 downto 0);
+    signal A, B:    std_logic_vector(15 downto 0);
     signal En:      std_logic;
-    signal Q, R:    std_logic_vector(1 downto 0);   
+    signal Q, R:    std_logic_vector(15 downto 0);   
     
     begin
     
@@ -62,33 +62,33 @@ architecture Behavioral of divide_tb is
     
         begin
         
-            -- case 1
-        A <= "00";                            
-        B <= "00";
+            -- case 1 1000/10
+        A <= "0000001111101000";                            
+        B <= "0000000000001010";
         En <= '1';
         wait for 10 ns;
             
          -- case 2         
-        A <= "11";
-        B <= "11";
+        A <= "0000001111101000";                            
+        B <= "0000000000001011";
         En <= '1';
         wait for 10 ns;
             
         -- case 3
-        A <= "01";
-        B <= "10";
+        A <= "0000001111101000";                            
+        B <= "0000000000001111";
         En <= '1';
         wait for 10 ns;
             
         -- case 4
-        A <= "10";
-        B <= "01";
+        A <= "0000001111101000";                            
+        B <= "0000000010001010";
         En <= '1';
         wait for 10 ns;
             
         -- case 5
-        A <= "01";
-        B <= "01";
+        A <= "0000001111101000";                            
+        B <= "0000000000001110";
         En <= '1';
         wait for 10 ns;
         

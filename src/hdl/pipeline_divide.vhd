@@ -35,12 +35,12 @@ use ieee.std_logic_unsigned.all;
 
 entity pipeline_divide is
 --  Port ( );
-generic(n: natural :=2);
-port(   A: in std_logic_vector(n-1 downto 0);
-        B: in std_logic_vector(n-1 downto 0);
+generic(n: natural :=16);
+port(   A: in std_logic_vector(15 downto 0);
+        B: in std_logic_vector(15 downto 0);
         En: in std_logic;
-        Q: out std_logic_vector(n-1 downto 0);
-        R: out std_logic_vector(n-1 downto 0)
+        Q: out std_logic_vector(15 downto 0);
+        R: out std_logic_vector(15 downto 0)
 ); 
 end pipeline_divide;
 
@@ -48,9 +48,28 @@ architecture Behavioral of pipeline_divide is
 
 -- signal declarations
 
-begin
+signal aint,bint: integer range 0 to 65535;
 
-    Q <= (A and B);
-    R <= (A and B);
+begin
+    aint <= CONV_INTEGER(A);
+    bint <= CONV_INTEGER(B);
+    process(aint, bint)
+    
+    variable temp1, temp2: integer range 0 to 65535;
+    variable y : std_logic_vector (15 downto 0);
+    
+    begin
+        temp1:=aint;
+        temp2:=bint;
+        for i in 15 downto 0 loop
+            if (temp1 > temp2 * 2 **i) then
+                y(i):= '0';
+                temp1 := temp1-temp2 * 2 ** i;
+            else y(i):= '0';
+            end if;
+        end loop;
+        R <= CONV_STD_LOGIC_VECTOR (temp1, 16);
+        Q <= y;   
+    end process;         
 
 end Behavioral;
