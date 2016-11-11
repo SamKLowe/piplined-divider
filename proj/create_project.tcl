@@ -11,7 +11,7 @@ cd $dest_dir
 
 
 # Project specific settings. These must be updated for each project.
-set proj_name "TEMPLATE"
+set proj_name "pipeline-divide"
 set part "xc7a35ticsg324-1L"
 set brd_part "digilentinc.com:arty:part0:1.1"
 
@@ -68,6 +68,9 @@ update_ip_catalog -rebuild
 
 # Add conventional sources
 add_files -quiet $src_dir/hdl
+
+# Add simulation sources
+add_files -fileset sim_1 -quiet $src_dir/sim
 
 # Add IPs
 # TODO: handle IP containers files
