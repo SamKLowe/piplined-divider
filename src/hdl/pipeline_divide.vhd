@@ -36,11 +36,11 @@ use ieee.std_logic_unsigned.all;
 entity pipeline_divide is
 --  Port ( );
 generic(n: natural :=16);
-port(   A: in std_logic_vector(15 downto 0);
-        B: in std_logic_vector(15 downto 0);
+port(   A: in std_logic_vector(n-1 downto 0);
+        B: in std_logic_vector(n-1 downto 0);
         En: in std_logic;
-        Q: out std_logic_vector(15 downto 0);
-        R: out std_logic_vector(15 downto 0)
+        Q: out std_logic_vector(n-1 downto 0);
+        R: out std_logic_vector(n-1 downto 0)
 ); 
 end pipeline_divide;
 
@@ -55,20 +55,28 @@ begin
     bint <= CONV_INTEGER(B);
     process(aint, bint)
     
-    variable temp1, temp2: integer range 0 to 65535;
-    variable y : std_logic_vector (15 downto 0);
+    -- variable temp1, temp2: integer range 0 to 65535;
+	variable temp1, temp2, tmp, tmp3: std_logic_vector (n-1 downto 0);
+    variable y : std_logic_vector (n-1 downto 0);
     
     begin
-        temp1:=aint;
-        temp2:=bint;
-        for i in 15 downto 0 loop
-            if (temp1 > temp2 * 2 **i) then
-                y(i):= '0';
-                temp1 := temp1-temp2 * 2 ** i;
-            else y(i):= '0';
+        temp1:=A;
+        temp2:=B;
+        for i in n-1 downto 0 loop
+			Tmp:= std_logic_vector(conv_unsigned (unsigned(temp1(n-1 DOWNTO i)),n));
+            if Tmp >= temp2 then
+                y(i):= '1';
+                Tmp3 := Tmp - temp2;
+				if i /= 0 then
+					temp1(n-1 downto i) := Tmp3(n-1-i downto 0);
+					temp1(i-1) := A(i-1);
+				end if;
+            else
+				y(i):= '0';
+				Tmp3 := Tmp;
             end if;
         end loop;
-        R <= CONV_STD_LOGIC_VECTOR (temp1, 16);
+        R <= Tmp3;
         Q <= y;   
     end process;         
 

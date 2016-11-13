@@ -88,11 +88,11 @@ architecture Behavioral of divide_tb is
             
         -- case 5
         A <= "0000000001010001";                            
-        B <= "0000000000000101";
+        B <= "0000000000000010";
         En <= '1';
         wait for 10 ns;
         
-        -- wait;
+        wait;
     
     end process;  
     
