@@ -33,7 +33,7 @@ use ieee.std_logic_unsigned.all;
 --library UNISIM;
 --use UNISIM.VComponents.all;
 
-entity pipeline_divide_1 is
+entity basic_divide is
 --  Port ( );
 generic(n: integer :=16);
 port(   A: in std_logic_vector(n-1 downto 0);
@@ -42,9 +42,9 @@ port(   A: in std_logic_vector(n-1 downto 0);
         Q: out std_logic_vector(n-1 downto 0);
         R: out std_logic_vector(n-1 downto 0)
 ); 
-end pipeline_divide_1;
+end basic_divide;
 
-architecture Behavioral of pipeline_divide_1 is
+architecture Behavioral of basic_divide is
 
 -- signal declarations
 

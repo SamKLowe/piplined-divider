@@ -42,8 +42,8 @@ end divide_tb;
 architecture Behavioral of divide_tb is
 
     component pipeline_divide is
-    generic(div_width: natural;
-            stages: natural
+    generic(div_width: natural
+--            stages: natural
             );
     port(   A: in std_logic_vector(15 downto 0);
             B: in std_logic_vector(15 downto 0);
@@ -61,7 +61,7 @@ architecture Behavioral of divide_tb is
     
     begin
     
-    u_pipeline_divide: pipeline_divide generic map(div_width, 2) port map(A, B, EN, Q, R);
+    u_pipeline_divide: pipeline_divide generic map(div_width) port map(A, B, EN, Q, R);
     
     process
     
