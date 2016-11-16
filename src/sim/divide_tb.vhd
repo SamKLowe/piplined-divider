@@ -21,6 +21,8 @@
 
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
+use ieee.std_logic_arith.all;
+use ieee.std_logic_unsigned.all;
 
 -- Uncomment the following library declaration if using
 -- arithmetic functions with Signed or Unsigned values
@@ -40,6 +42,9 @@ end divide_tb;
 architecture Behavioral of divide_tb is
 
     component pipeline_divide is
+    generic(div_width: natural;
+            stages: natural
+            );
     port(   A: in std_logic_vector(15 downto 0);
             B: in std_logic_vector(15 downto 0);
             En: in std_logic;
@@ -48,13 +53,15 @@ architecture Behavioral of divide_tb is
     ); 
     end component;
     
-    signal A, B:    std_logic_vector(15 downto 0);
+    constant div_width: natural := 16;
+    
+    signal A, B:    std_logic_vector(div_width-1 downto 0);
     signal En:      std_logic;
-    signal Q, R:    std_logic_vector(15 downto 0);   
+    signal Q, R:    std_logic_vector(div_width-1 downto 0);   
     
     begin
     
-    u_pipeline_divide: pipeline_divide port map(A, B, EN, Q, R);
+    u_pipeline_divide: pipeline_divide generic map(div_width, 2) port map(A, B, EN, Q, R);
     
     process
     
@@ -63,34 +70,34 @@ architecture Behavioral of divide_tb is
         begin
         
             -- case 1 1000/10
-        A <= "0000000001010001";                            
-        B <= "0000000000001001";
+        A <= std_logic_vector(conv_unsigned ((2),div_width));                            
+        B <= std_logic_vector(conv_unsigned ((1),div_width));   
         En <= '1';
-        wait for 10 ns;
+        wait for 30 ns;
             
          -- case 2         
-        A <= "0000000001010001";                            
-        B <= "0000000000001000";
+        A <= std_logic_vector(conv_unsigned ((3),div_width));                            
+        B <= std_logic_vector(conv_unsigned ((1),div_width));  
         En <= '1';
-        wait for 10 ns;
+        wait for 30 ns;
             
         -- case 3
-        A <= "0000000001010001";                            
-        B <= "0000000000000111";
+        A <= std_logic_vector(conv_unsigned ((4),div_width));                            
+        B <= std_logic_vector(conv_unsigned ((1),div_width));  
         En <= '1';
-        wait for 10 ns;
+        wait for 30 ns;
             
         -- case 4
-        A <= "0000000001010001";                            
-        B <= "0000000000000110";
+        A <= std_logic_vector(conv_unsigned ((5),div_width));                            
+        B <= std_logic_vector(conv_unsigned ((1),div_width));  
         En <= '1';
-        wait for 10 ns;
+        wait for 30 ns;
             
         -- case 5
-        A <= "0000000001010001";                            
-        B <= "0000000000000010";
+        A <= std_logic_vector(conv_unsigned ((4),div_width));                            
+        B <= std_logic_vector(conv_unsigned ((1),div_width));  
         En <= '1';
-        wait for 10 ns;
+        wait for 30 ns;
         
         wait;
     
